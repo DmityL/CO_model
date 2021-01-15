@@ -89,11 +89,11 @@ We need to add extra columns: coordinates RA/Dec in HMS/DMS format. I prefer to 
 For each clump peak position that were found using GAUSSCLUMP we have to extract the spectra from each data cube. Assume that we create subfolders for each data cube: `_FCRAO_12CO_spectra`, `_FCRAO_13CO_spectra`, `_SMT_12CO_spectra`, `_SMT_13CO_spectra`. 
 
 Then spectra for each clump should be extracted using following commands (coordinates and clump number should be replaced using GAUSSCLUMP catalog):
-``mbspect in=12CO_data coord=05:41:28.74,+35:48:56.5 log=_FCRAO_12CO_spectra/Clump001.dat device=_FCRAO_13CO_spectra/Clump001.ps/PS options=measure xaxis=velo > _FCRAO_13CO_spectra/Clump001.fit``
+```mbspect in=12CO_data coord=05:41:28.74,+35:48:56.5 log=_FCRAO_12CO_spectra/Clump001.dat device=_FCRAO_13CO_spectra/Clump001.ps/PS options=measure xaxis=velo > _FCRAO_13CO_spectra/Clump001.fit```
 We will now have extracted spectra and linewidth estimation for each line.
 
 After we extract the spectra for each clump, we should combine different lines for each clump to single file. That can be done using *spect_comb.pl* script from this repo. The source code should be modified to fit your data. The script will automatically compute RMS for each spectra using first 70 channels of each file. The number of channels to cumpute RMS should be also modified in the file *spect_comb.pl*. We create folder *_spect_comb* to store the combined spectra.
-``perl spect_comb.pl``
+```perl spect_comb.pl```
 The resulting files looks like this (first column - velocity, second - intensity, last column - RMS estimation):
 ```
 -34.98225403	1.69511E+00	1.39041037401241
@@ -105,3 +105,8 @@ The resulting files looks like this (first column - velocity, second - intensity
 Note that spectra are beind combined using velocity shift specified in file *spect_comb.pl* ($dv = 35). If velocity shift will be too small, then data will be broken. 
 The important parameter is velocity inverval for emission in line 67 of *spect_comb.pl* ($v > -35 and $v < 0). All data points outside of this interval will not be included to the combined spectra. Thus if you have emission line at ~ -20 km/s, then selecting velocity inverval -35>v>0 and velocity shift dv = 35 is good way to go.
 
+## 4. Create an initial estimate of model parameters
+
+In order to get an initial estimate for each clump we need following values for each clump: peak values of 12CO and 13CO lines, linewidth of 13CO line.
+
+The peak values of 12CO and 13CO
