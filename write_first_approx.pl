@@ -31,11 +31,6 @@ d1 = $clump_sigma[$i]
 }
 
 
-
-
-
-
-
 sub read_col {
 	open F,$_[0];
 	my $col_num = $_[1]; 
