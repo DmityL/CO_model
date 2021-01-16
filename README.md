@@ -36,8 +36,8 @@ Assume we have several CO data cubes for the same region. Firstly we need to mak
 4. If some cubes are in galactic coordinates, then convert them to equatorial using command ``regrid in=Data1.conv out=Data1.conv.regrid options=galeqsw,offset``
 
 Here is the table containing rest frequency F0 (in Hz) and value of T0 (= h*nu/c) of different CO lines
-|F0(CO)|F0(13CO)|F0(C17O)|F0(C18O)|T0(CO)|T0(13CO)|
-|-----|-----|-----|-----|-----|-----|
+|Transition|F0(CO)|F0(13CO)|F0(C17O)|F0(C18O)|T0(CO)|T0(13CO)|
+|-----|-----|-----|-----|-----|-----|-----|
 |1-0|115.2712018E+09|110.2013543E+09|112.3592837E+09|109.7821734E+09|5.5|5.3|
 |2-1|230.5380000E+09|220.3986841E+09|224.7143850E+09|219.5603541E+09|11.1|10.6|
 |3-2|345.7959899E+09|330.5879652E+09|337.0611298E+09|329.3305525E+09|16.6|15.9|
@@ -47,7 +47,7 @@ Here is the table containing rest frequency F0 (in Hz) and value of T0 (= h*nu/c
 |7-6|806.6518060E+09|771.1841255E+09|786.2808166E+09|768.2515933E+09|38.7|37.0|
 |8-7|921.7997000E+09|881.2728093E+09|898.5230217E+09|877.9219553E+09|44.2|42.3|
 
-The convolution size should be computed as Beam = sqrt(Beam_source^2 - Beam_final^2)
+The convolution size should be computed as Beam = sqrt(Beam_final^2 - Beam_source^2)
 
 
 ## 2. Extract clumps
