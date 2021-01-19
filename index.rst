@@ -1,9 +1,12 @@
-# CO LTE multi-layer radiative transfer model
-### Astrophysical method for describing and modelling the complex line profiles of CO molecules
+*****
+CO LTE multi-layer radiative transfer model
+*****
+Astrophysical method for describing and modelling the complex line profiles of CO molecules
 
 In this work, we investigated the features of the analysis of complex CO line profiles in giant molecular clouds (GMCs). A technique has been developed to use several emission lines of the CO molecule to build a model and determine GMCs physical parameters within the local thermodynamic equilibrium framework. The technique includes clumps extraction using the GAUSSCLUMP algorithm and constructing a multilayer radiation transfer model for clumps using optimization and Monte Carlo methods. As an example, the technique was applied to analyze the large-scale mapping of the S231-S235 star formation complex in four different CO lines.
 
-## 1. Install nessesary instruments
+1. Install nessesary instruments
+########
 
 In order to go throught the analysis we need several instruments.
 
@@ -26,7 +29,8 @@ In order to go throught the analysis we need several instruments.
     * Get the lastest Starlink release at http://starlink.eao.hawaii.edu/starlink/Releases
 
 
-## 1. Prepare data
+2. Prepare data
+########
 
 Assume we have several CO data cubes for the same region. Firstly we need to make cubes comparable to each other.
 
@@ -50,7 +54,8 @@ Here is the table containing rest frequency F0 (in Hz) and value of T0 (= h*nu/c
 The convolution size should be computed as Beam = sqrt(Beam_final^2 - Beam_source^2)
 
 
-## 2. Extract clumps
+3. Extract clumps
+########
 
 We assume that 13CO(1-0) line will be used for clump extraction. In order to extract clumps, the following command of Starlink should be used:
 
@@ -84,7 +89,8 @@ Index	Peak1	Peak2	Peak3	Cen1	Cen2	Cen3	Size1	Size2	Size3	Sum	Peak	Volume	GCMEANP
 ```
 We need to add extra columns: coordinates RA/Dec in HMS/DMS format. I prefer to use TOPCAT software for coodinate conversion: http://www.star.bris.ac.uk/~mbt/topcat/
 
-## 3. Extract spectra
+4. Extract spectra
+########
 
 For each clump peak position that were found using GAUSSCLUMP we have to extract the spectra from each data cube. Assume that we create subfolders for each data cube: `_FCRAO_12CO_spectra`, `_FCRAO_13CO_spectra`, `_SMT_12CO_spectra`, `_SMT_13CO_spectra`. 
 
@@ -105,7 +111,8 @@ The resulting files looks like this (first column - velocity, second - intensity
 Note that spectra are beind combined using velocity shift specified in file *spect_comb.pl* ($dv = 35). If velocity shift will be too small, then data will be broken. 
 The important parameter is velocity inverval for emission in line 67 of *spect_comb.pl* ($v > -35 and $v < 0). All data points outside of this interval will not be included to the combined spectra. Thus if you have emission line at ~ -20 km/s, then selecting velocity inverval -35>v>0 and velocity shift dv = 35 is good way to go.
 
-## 4. Create an initial estimate of model parameters
+5. Create an initial estimate of model parameters
+########
 
 In order to get an initial estimate for each clump we need following values for each clump: peak values of 12CO and 13CO lines, linewidth of 13CO line.
 
