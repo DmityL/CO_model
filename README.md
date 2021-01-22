@@ -96,7 +96,7 @@ We will now have extracted spectra and linewidth estimation for each line.
 After we extract the spectra for each clump, we should combine different lines for each clump to single file. That can be done using *spect_comb.pl* script from this repo. The source code should be modified to fit your data. The script will automatically compute RMS for each spectra using first 70 channels of each file. The number of channels to cumpute RMS should be also modified in the file *spect_comb.pl*. We create folder *_spect_comb* to store the combined spectra.
 ```perl spect_comb.pl```
 The resulting files ClumpNNN.dat looks like this (first column - velocity, second - intensity, last column - RMS estimation):
-|---|---|
+|---|---|---|
 |-34.98225403|1.69511E+00|1.39041037401241|
 |-34.85528946|-3.24238E-02|1.39041037401241|
 |-34.72832489|-2.70249E+00|1.39041037401241|
