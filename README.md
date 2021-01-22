@@ -118,7 +118,9 @@ Before we start extracting we need to create the simplified catalog of clumps th
 |Clump002|173.631|2.887|-20.81|
 |Clump003|173.718|2.694|-16.69|
 
-The `scan_spectra.pl` tool looks for ClumpNNN.dat files in the specific folder (should be specified in the source code) and using the peak velocities of each clumps from the Clumps_l_b_v.csv file extract the value of spectra intensity at the specific velocity. Actually it extracts three nearest points at specific velocity and returns the average of three points. Using this tools we extract intensity of each clump at peak velocity in several lines: 13CO and 12CO. The resulting files for each CO line looks like this:
+The content of `clumps_cat.csv` can be easily created using GAUSSCLUMPS catalog from the step 2. This file is nessesary for further data extraction.
+
+The `scan_spectra.pl` tool looks for ClumpNNN.dat files in the specific folder (should be specified in the source code) and using the peak velocities of each clumps from the clumps_cat.csv file extract the value of spectra intensity at the specific velocity. Actually it extracts three nearest points at specific velocity and returns the average of three points to minimize the noise peaks. Using this tools we extract intensity of each clump at peak velocity in several lines: 13CO and 12CO. The resulting files for each CO line looks like this:
 
 |Clump|Tpeak|
 |---|---|
@@ -130,7 +132,10 @@ The `scan_spectra.pl` tool looks for ClumpNNN.dat files in the specific folder (
 |Clump006|13.53|
 |Clump007|10.45|
 
+We need to extract intensity for the following lines: 12CO(1-0), 13CO(1-0)
+
 The `scan_fit.pl` tool scan for fit files *.fit that comes from the previous spectra extraction step. It looks for the following line: ``#MNW Line width:`` and push the found value to the CSV file for each clump, thus extracting the estimation of the linewidth. The resulting file looks like this:
+
 |Clump|FWHM|
 |---|---|
 |Clump001|1.927|
@@ -140,4 +145,21 @@ The `scan_fit.pl` tool scan for fit files *.fit that comes from the previous spe
 |Clump005|1.765|
 |Clump006|3.46|
 |Clump007|1.644|
-After executing these tools we will have following files: _FCRAO_12CO_spectra_Tpeak.csv, _FCRAO_13CO_spectra_Tpeak.csv, _FCRAO_13CO_spectra_FWHM.csv. These files should be combined in any table processor program (easy to do with copy and paste). The resulting file
+
+We need to extract linewidth for 13CO(1-0) line.
+
+After executing these tools we will have following files: _FCRAO_12CO_spectra_Tpeak.csv, _FCRAO_13CO_spectra_Tpeak.csv, _FCRAO_13CO_spectra_FWHM.csv.
+The next step is creation of the initial estimate table. We call it `calc.csv`. The content of the file is following:
+
+|Clump|Peak1|Peak2|V|T12|Tex|T13|tau_13|tau_12|FWHM|sigma|
+|---|---|---|---|---|---|---|---|---|---|---|
+|Clump001|173.681|2.862|-18.95|30.71|36.15|15.22|0.62|43.65|2.508|1.065|
+|Clump002|173.631|2.887|-20.81|27.57|32.98|13.61|0.61|43.04|2.199|0.934|
+|Clump003|173.718|2.694|-16.69|17.94|23.22|12.52|0.99|69.59|2.941|1.249|
+|Clump004|173.618|2.775|-21.34|25.69|31.08|10.74|0.49|34.29|2.966|1.26|
+
+In this table Clump, Peak1, Peak2 and V columns are just copy from the GAUSSCLUMP catalog. T12 is the main-beam temperature of 12CO(1-0) line from  _FCRAO_12CO_spectra_Tpeak.csv file, T13 is same for 13CO(1-0) file, FWHM is linewidth from _FCRAO_13CO_spectra_FWHM.csv file. Other column are being calculated.
+
+Tex is the excitaiton temperature that is calculated from T12 value using following formula: `Tex=T0/ln(1+T0/(T12+T0/(exp(T0/Tbg)-1)))`, where T0=hnu/k=5.53 for 12CO(1-0). Note that we use the simplified formula for Tex calculaiton that do not include the Rayleigh correction. If one need more precise formula, then the following equation of radiative transfer should be solved numerically: `T12=[Jv(Tex)-Jv(Tbg)](1-exp(-tau))`, where `Jv(T)=(h nu/k)/[exp(h*nu/k/T)-1]` and tau is optical depth estimation.
+
+tau13 is the optical depth of 13CO(1-0) line in the line center that is being calculated using the following formula: `tau13=-ln[1-(T13/T0)/(1/{exp(T0/Tex)-1}-1/{exp(T0/Tbg)-1})]`, where T0=5.29 for 13CO(1-0) line. It can also be estimated numerically using the ratio of main beam temperatures: `T12/T13 = (1-exp(-tau13/R))/(1-exp(-tau13))`, where R is 12CO/13CO isotope abundance ratio (R ~= 80).
