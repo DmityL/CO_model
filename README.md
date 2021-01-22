@@ -1,11 +1,11 @@
-# CO LTE multi-layer radiative transfer model
+# CO LTE multilayer radiative transfer model
 ### Astrophysical method for describing and modelling the complex line profiles of CO molecules
 
-In this work, we investigated the features of the analysis of complex CO line profiles in giant molecular clouds (GMCs). A technique has been developed to use several emission lines of the CO molecule to build a model and determine GMCs physical parameters within the local thermodynamic equilibrium framework. The technique includes clumps extraction using the GAUSSCLUMP algorithm and constructing a multilayer radiation transfer model for clumps using optimization and Monte Carlo methods. As an example, the technique was applied to analyze the large-scale mapping of the S231-S235 star formation complex in four different CO lines.
+In this work, we investigated the features of the analysis of complex CO line profiles in giant molecular clouds (GMCs). A technique has been developed to use several CO molecule emission lines to build a model and determine GMCs physical parameters within the local thermodynamic equilibrium framework. The technique includes clumps extraction using the GAUSSCLUMP algorithm and constructing a multilayer radiation transfer model for clumps using optimization and Monte Carlo methods. For example, the technique was applied to analyze the large-scale mapping of the S231-S235 star formation complex in four different CO lines.
 
-## 1. Install nessesary instruments
+## 1. Install necessary instruments
 
-In order to go throught the analysis we need several instruments.
+To go through the analysis, we need several instruments.
 
 1. Perl (installed by default in must Linux-based OS) with the following modules:
     - List::MoreUtils (install using `cpan install List::MoreUtils`)
@@ -31,8 +31,8 @@ In order to go throught the analysis we need several instruments.
 Assume we have several CO data cubes for the same region. Firstly we need to make cubes comparable to each other.
 
 1. Convert cubes from fits to Miriad dataset using command ``fits in=Data1.fits out=Data1 op=xyin``
-2. In nessesary, add rest frequency information using command ``puthd in=Data1/restfreq value=
-3. If nessesary, convolve cubes to the same beam size using command ``convol map=Data1 out=Data1.conv beam=13.2`
+2. In necessary, add rest frequency information using command ``puthd in=Data1/restfreq value=
+3. If necessary, convolve cubes to the same beam size using command ``convol map=Data1 out=Data1.conv beam=13.2`
 4. If some cubes are in galactic coordinates, then convert them to equatorial using command ``regrid in=Data1.conv out=Data1.conv.regrid options=galeqsw,offset``
 
 Here is the table containing rest frequency F0 (in Hz) and value of T0 (= h*nu/c) of different CO lines
@@ -66,12 +66,12 @@ The content of gaussclumps.cfg is following (should be modified according to dat
 GaussClumps.FwhmBeam=2.0 # beam size of cube in pixels
 GaussClumps.ExtraCols=1 # Output nessesary columns
 GaussClumps.NPad=100 # Specifies a termination criterion for the GaussClumps algorithm.  The algorithm will terminate when "Npad" consecutive clumps have been fitted all of which have peak values less than the threshold value specified by the "Thresh" parameter, or when one of the other termination criteria is met. [10] 
-GaussClumps.Thresh=1.0 # Gives the minimum peak amplitude of clumps to be fitted by theGaussClumps algorithm (see alsoGaussClumps.NPad). The supplied value is multipled by the RMS noise level before being used. [2.0] 
+GaussClumps.Thresh=1.0 # Gives the minimum peak amplitude of clumps to be fitted by theGaussClumps algorithm (see alsoGaussClumps.NPad). The supplied value is multiplied by the RMS noise level before being used. [2.0] 
 GaussClumps.VeloRes=2.0 ## The velocity resolution of the instrument, in channels. The velocity FWHM of each clump is not allowed to be smaller than this value. Only used for 3D data. [2.0] 
 ```
-As the result, we will have catalog of clumps in file catalog.txt and model of clumps in file 13CO_model.fits. The catalog should be converted to any table processor program (like MS Excel, Google Sheets, etc.) to work with it.
+As a result, we will have a catalogue of clumps in file catalog.txt and model of clumps in file 13CO_model.fits. One should convert the catalogue to any table processor program (like MS Excel, Google Sheets, etc.) to work with it.
 
-The Gaussclump catalog is looks like this:
+The Gaussclump catalogue looks like this:
 
 |Index|Peak1|Peak2|Peak3|Cen1|Cen2|Cen3|Size1|Size2|Size3|Sum|Peak|Volume|GCMEANPEAK|GCFWHM1|GCFWHM2|GCFWHM3|GCVELGRAD1|GCVELGRAD2|GCANGLE|GCBG|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -83,7 +83,7 @@ The Gaussclump catalog is looks like this:
 |6|173.1684387|2.356122299|-19611.74487|173.1654713|2.358375097|-19506.44966|94.50408122|71.09663136|976.7823119|19568.50905|11.15808744|9.94E+08|55.82002788|7.922738548|11.16532352|17.69790103|0.092286987|0.726093703|108.4669192|5.609638543|
 |7|173.7810138|2.668693433|-16424.00466|173.7843963|2.666735238|-16408.70335|60.94708659|41.1504897|604.2729987|5338.051414|12.06671065|2.73E+08|70.68626515|7.256585774|5.060505622|11.73578738|0.039881272|-0.111926251|8.674529555|1.724292739|
 
-We need to add extra columns: coordinates RA/Dec in HMS/DMS format. I prefer to use TOPCAT software for coodinate conversion: http://www.star.bris.ac.uk/~mbt/topcat/
+We need to add extra columns: coordinates RA/Dec in HMS/DMS format. I prefer to use TOPCAT software for coordinate conversion: http://www.star.bris.ac.uk/~mbt/topcat/
 
 ## 3. Extract spectra
 
@@ -93,7 +93,7 @@ Then spectra for each clump should be extracted using following commands (coordi
 ```mbspect in=12CO_data coord=05:41:28.74,+35:48:56.5 log=_FCRAO_12CO_spectra/Clump001.dat device=_FCRAO_13CO_spectra/Clump001.ps/PS options=measure xaxis=velo > _FCRAO_13CO_spectra/Clump001.fit```
 We will now have extracted spectra and linewidth estimation for each line.
 
-After we extract the spectra for each clump, we should combine different lines for each clump to single file. That can be done using *spect_comb.pl* script from this repo. The source code should be modified to fit your data. The script will automatically compute RMS for each spectra using first 70 channels of each file. The number of channels to cumpute RMS should be also modified in the file *spect_comb.pl*. We create folder *_spect_comb* to store the combined spectra.
+After we extract the spectra for each clump, we should combine different lines for each clump to a single file. That can be done using *spect_comb.pl* script from this repo. One should modify the source code to fit your data. The script will automatically compute RMS for each spectra using the first 70 channels of each file. One should also modify the number of channels to compute RMS in the file *spect_comb.pl*. We create folder *_spect_comb* to store the combined spectra.
 ```perl spect_comb.pl```
 The resulting files ClumpNNN.dat looks like this (first column - velocity, second - intensity, last column - RMS estimation):
 |Velocity|Intensity|RMS|
@@ -104,23 +104,23 @@ The resulting files ClumpNNN.dat looks like this (first column - velocity, secon
 |-34.60136032|1.10365E+00|1.39041037401241|
 |-34.47439575|-1.53760E+00|1.39041037401241|
 
-Note that spectra are beind combined using velocity shift specified in file *spect_comb.pl* ($dv = 35). If velocity shift will be too small, then data will be broken. 
+Note that spectra are being combined using velocity shift specified in file *spect_comb.pl* ($dv = 35). If the velocity shift is too small, then the script will break data. 
 The important parameter is velocity inverval for emission in line 67 of *spect_comb.pl* ($v > -35 and $v < 0). All data points outside of this interval will not be included to the combined spectra. Thus if you have emission line at ~ -20 km/s, then selecting velocity inverval -35>v>0 and velocity shift dv = 35 is good way to go.
 
 ## 4. Create an initial estimate of model parameters
 
-In order to get an initial estimate for each clump we need following values for each clump: peak values of 12CO and 13CO lines, linewidth of 13CO line. The values are being extracted from the spectra using `scan_spectra.pl` and `scan_fit.pl` utils.  
+To get an initial estimate for each clump, we need following values for each clump: peak values of 12CO and 13CO lines, the linewidth of 13CO line. The values are being extracted from the spectra using `scan_spectra.pl` and `scan_fit.pl` utils.  
 
-Before we start extracting we need to create the simplified catalog of clumps that we name `clumps_cat.csv` with following content:
+Before we start extracting we need to create the simplified catalogue of clumps that we name `clumps_cat.csv` with the following content:
 |Clump|Peak1|Peak2|V|
 |---|---|---|---|
 |Clump001|173.681|2.862|-18.95|
 |Clump002|173.631|2.887|-20.81|
 |Clump003|173.718|2.694|-16.69|
 
-The content of `clumps_cat.csv` can be easily created using GAUSSCLUMPS catalog from the step 2. This file is nessesary for further data extraction.
+The content of `clumps_cat.csv` can be easily created using GAUSSCLUMPS catalogue from step 2. This file is necessary for further data extraction.
 
-The `scan_spectra.pl` tool looks for ClumpNNN.dat files in the specific folder (should be specified in the source code) and using the peak velocities of each clumps from the clumps_cat.csv file extract the value of spectra intensity at the specific velocity. Actually it extracts three nearest points at specific velocity and returns the average of three points to minimize the noise peaks. Using this tools we extract intensity of each clump at peak velocity in several lines: 13CO and 12CO. The resulting files for each CO line looks like this:
+The `scan_spectra.pl` tool looks for ClumpNNN.dat files in the specific folder (should be specified in the source code) and using each clump's peak velocities from the clumps_cat.csv file extract the value of spectra intensity at the specific velocity. Actually, it extracts three nearest points at a specific velocity and returns the average of three points to minimize the noise peaks. Using these tools, we extract each clump's intensity at peak velocity in several lines: 13CO and 12CO. The resulting files for each CO line look like this:
 
 |Clump|Tpeak|
 |---|---|
@@ -134,7 +134,7 @@ The `scan_spectra.pl` tool looks for ClumpNNN.dat files in the specific folder (
 
 We need to extract intensity for the following lines: 12CO(1-0), 13CO(1-0)
 
-The `scan_fit.pl` tool scan for fit files *.fit that comes from the previous spectra extraction step. It looks for the following line: ``#MNW Line width:`` and push the found value to the CSV file for each clump, thus extracting the estimation of the linewidth. The resulting file looks like this:
+The `scan_fit.pl` tool scan for fit files *.fit from the previous spectra extraction step. It looks for the following line: ``#MNW Line width:`` and push the found value to the CSV file for each clump, thus extracting the linewidth estimation. The resulting file looks like this:
 
 |Clump|FWHM|
 |---|---|
@@ -146,10 +146,10 @@ The `scan_fit.pl` tool scan for fit files *.fit that comes from the previous spe
 |Clump006|3.46|
 |Clump007|1.644|
 
-We need to extract linewidth for 13CO(1-0) line.
+We need to extract linewidth for the 13CO(1-0) line.
 
-After executing these tools we will have following files: _FCRAO_12CO_spectra_Tpeak.csv, _FCRAO_13CO_spectra_Tpeak.csv, _FCRAO_13CO_spectra_FWHM.csv.
-The next step is creation of the initial estimate table. We call it `calc.csv`. The content of the file is following:
+After executing these tools, we will have the following files: _FCRAO_12CO_spectra_Tpeak.csv, _FCRAO_13CO_spectra_Tpeak.csv, _FCRAO_13CO_spectra_FWHM.csv.
+The next step is the creation of the initial estimate table. We call it `calc.csv`. The content of the file is the following:
 
 |Clump|Peak1|Peak2|V|T12|Tex|T13|tau_13|tau_12|FWHM|sigma|
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -158,8 +158,25 @@ The next step is creation of the initial estimate table. We call it `calc.csv`. 
 |Clump003|173.718|2.694|-16.69|17.94|23.22|12.52|0.99|69.59|2.941|1.249|
 |Clump004|173.618|2.775|-21.34|25.69|31.08|10.74|0.49|34.29|2.966|1.26|
 
-In this table Clump, Peak1, Peak2 and V columns are just copy from the GAUSSCLUMP catalog. T12 is the main-beam temperature of 12CO(1-0) line from  _FCRAO_12CO_spectra_Tpeak.csv file, T13 is same for 13CO(1-0) file, FWHM is linewidth from _FCRAO_13CO_spectra_FWHM.csv file. Other column are being calculated.
+In this table Clump, Peak1, Peak2 and V columns are just copied from the GAUSSCLUMP catalogue. T12 is the main-beam temperature of 12CO(1-0) line from  _FCRAO_12CO_spectra_Tpeak.csv file, T13 is same for 13CO(1-0) file, FWHM is linewidth from _FCRAO_13CO_spectra_FWHM.csv file. Other columns are being calculated.
 
-Tex is the excitaiton temperature that is calculated from T12 value using following formula: `Tex=T0/ln(1+T0/(T12+T0/(exp(T0/Tbg)-1)))`, where T0=hnu/k=5.53 for 12CO(1-0). Note that we use the simplified formula for Tex calculaiton that do not include the Rayleigh correction. If one need more precise formula, then the following equation of radiative transfer should be solved numerically: `T12=[Jv(Tex)-Jv(Tbg)](1-exp(-tau))`, where `Jv(T)=(h nu/k)/[exp(h*nu/k/T)-1]` and tau is optical depth estimation.
+Tex is the excitation temperature that is calculated from T12 value using following formula: `Tex=T0/ln(1+T0/(T12+T0/(exp(T0/Tbg)-1)))`, where T0=hnu/k=5.53 for 12CO(1-0). Note that we use the simplified formula for Tex calculation that does not include the Rayleigh correction. If one need more precise formula, then the following equation of radiative transfer should be solved numerically: `T12=[Jv(Tex)-Jv(Tbg)](1-exp(-tau))`, where `Jv(T)=(h nu/k)/[exp(h*nu/k/T)-1]` and tau is optical depth estimation.
 
 tau13 is the optical depth of 13CO(1-0) line in the line center that is being calculated using the following formula: `tau13=-ln[1-(T13/T0)/(1/{exp(T0/Tex)-1}-1/{exp(T0/Tbg)-1})]`, where T0=5.29 for 13CO(1-0) line. It can also be estimated numerically using the ratio of main beam temperatures: `T12/T13 = (1-exp(-tau13/R))/(1-exp(-tau13))`, where R is 12CO/13CO isotope abundance ratio (R ~= 80).
+
+tau12 is the optical depth of 12CO(1-0) line and calculated by multiplying the tau13 to the abundance ratio R: `tau12=tau13*R`
+
+Doppler linewidth (sigma) is calculated from 13CO(1-0) line FWHM using following formula: `sigma = FWHM/2.355`
+
+After creating initial estimates catalogue, we execute the `write_first_approx.pl` tool that creates the initial estimates for each clump in separate files. The content of each file looks like this:
+```
+tbg = 2.7
+rat = 80
+shift10 = 0
+
+tx1 = 35.17
+t1 = 27.24
+v1 = -19.74
+d1 = 0.950
+```
+where rat is assumed isotope ratio, shift10 is the shift of line due to technical problems (assumed 0 by default) and other parameters correspond to model initial estimate: tx1,t1,v1,d1 - excitation temperature, optical depth of 12CO(1-0) line in line centre, the velocity of peak and linewidth. These parameters allow creating the model spectra. 
