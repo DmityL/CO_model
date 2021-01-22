@@ -112,33 +112,32 @@ The important parameter is velocity inverval for emission in line 67 of *spect_c
 In order to get an initial estimate for each clump we need following values for each clump: peak values of 12CO and 13CO lines, linewidth of 13CO line. The values are being extracted from the spectra using `scan_spectra.pl` and `scan_fit.pl` utils.  
 
 Before we start extracting we need to create the simplified catalog of clumps that we name `clumps_cat.csv` with following content:
-```
-Clump	Peak1	Peak2	V
-Clump001	173.681	2.862	-18.95
-Clump002	173.631	2.887	-20.81
-Clump003	173.718	2.694	-16.69
-```
+|Clump|Peak1|Peak2|V|
+|---|---|---|---|
+|Clump001|173.681|2.862|-18.95|
+|Clump002|173.631|2.887|-20.81|
+|Clump003|173.718|2.694|-16.69|
 
 The `scan_spectra.pl` tool looks for ClumpNNN.dat files in the specific folder (should be specified in the source code) and using the peak velocities of each clumps from the Clumps_l_b_v.csv file extract the value of spectra intensity at the specific velocity. Actually it extracts three nearest points at specific velocity and returns the average of three points. Using this tools we extract intensity of each clump at peak velocity in several lines: 13CO and 12CO. The resulting files for each CO line looks like this:
-```
-Clump	Tpeak
-Clump001	28.25
-Clump002	27.92
-Clump003	14.55
-Clump004	27.87
-Clump005	34.28
-Clump006	13.53
-Clump007	10.45
-```
+
+|Clump|Tpeak|
+|---|---|
+|Clump001|28.25|
+|Clump002|27.92|
+|Clump003|14.55|
+|Clump004|27.87|
+|Clump005|34.28|
+|Clump006|13.53|
+|Clump007|10.45|
+
 The `scan_fit.pl` tool scan for fit files *.fit that comes from the previous spectra extraction step. It looks for the following line: ``#MNW Line width:`` and push the found value to the CSV file for each clump, thus extracting the estimation of the linewidth. The resulting file looks like this:
-```
-Clump	FWHM
-Clump001	1.927
-Clump002	1.855
-Clump003	2.412
-Clump004	2.278
-Clump005	1.765
-Clump006	3.46
-Clump007	1.644
-```
+|Clump|FWHM|
+|---|---|
+|Clump001|1.927|
+|Clump002|1.855|
+|Clump003|2.412|
+|Clump004|2.278|
+|Clump005|1.765|
+|Clump006|3.46|
+|Clump007|1.644|
 After executing these tools we will have following files: _FCRAO_12CO_spectra_Tpeak.csv, _FCRAO_13CO_spectra_Tpeak.csv, _FCRAO_13CO_spectra_FWHM.csv. These files should be combined in any table processor program (easy to do with copy and paste). The resulting file
