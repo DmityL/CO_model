@@ -72,7 +72,7 @@ GaussClumps.VeloRes=2.0 ## The velocity resolution of the instrument, in channel
 As the result, we will have catalog of clumps in file catalog.txt and model of clumps in file 13CO_model.fits. The catalog should be converted to any table processor program (like MS Excel, Google Sheets, etc.) to work with it.
 
 The Gaussclump catalog is looks like this:
-```
+
 |Index|Peak1|Peak2|Peak3|Cen1|Cen2|Cen3|Size1|Size2|Size3|Sum|Peak|Volume|GCMEANPEAK|GCFWHM1|GCFWHM2|GCFWHM3|GCVELGRAD1|GCVELGRAD2|GCANGLE|GCBG|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |1|173.6809749|2.862433769|-18947.63233|173.6801833|2.863415146|-18915.47601|41.78595814|68.5669739|689.714063|9436.09794|18.24441286|3.59E+08|11.18156155|4.956228399|7.996271926|12.6606003|-0.389197949|-0.325293626|-11.25550824|3.186878383|
@@ -82,7 +82,7 @@ The Gaussclump catalog is looks like this:
 |5|173.6372203|2.818679302|-19744.56738|173.6347192|2.817034972|-19691.52315|57.1025503|68.07299746|706.3527784|10171.1941|13.79874127|4.58E+08|48.89812688|6.643001077|8.007835062|12.83113146|0.62717653|0.218486793|15.49746208|0.901523622|
 |6|173.1684387|2.356122299|-19611.74487|173.1654713|2.358375097|-19506.44966|94.50408122|71.09663136|976.7823119|19568.50905|11.15808744|9.94E+08|55.82002788|7.922738548|11.16532352|17.69790103|0.092286987|0.726093703|108.4669192|5.609638543|
 |7|173.7810138|2.668693433|-16424.00466|173.7843963|2.666735238|-16408.70335|60.94708659|41.1504897|604.2729987|5338.051414|12.06671065|2.73E+08|70.68626515|7.256585774|5.060505622|11.73578738|0.039881272|-0.111926251|8.674529555|1.724292739|
-```
+
 We need to add extra columns: coordinates RA/Dec in HMS/DMS format. I prefer to use TOPCAT software for coodinate conversion: http://www.star.bris.ac.uk/~mbt/topcat/
 
 ## 3. Extract spectra
@@ -96,6 +96,7 @@ We will now have extracted spectra and linewidth estimation for each line.
 After we extract the spectra for each clump, we should combine different lines for each clump to single file. That can be done using *spect_comb.pl* script from this repo. The source code should be modified to fit your data. The script will automatically compute RMS for each spectra using first 70 channels of each file. The number of channels to cumpute RMS should be also modified in the file *spect_comb.pl*. We create folder *_spect_comb* to store the combined spectra.
 ```perl spect_comb.pl```
 The resulting files ClumpNNN.dat looks like this (first column - velocity, second - intensity, last column - RMS estimation):
+|Velocity|Intensity|RMS|
 |---|---|---|
 |-34.98225403|1.69511E+00|1.39041037401241|
 |-34.85528946|-3.24238E-02|1.39041037401241|
