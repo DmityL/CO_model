@@ -96,13 +96,13 @@ We will now have extracted spectra and linewidth estimation for each line.
 After we extract the spectra for each clump, we should combine different lines for each clump to single file. That can be done using *spect_comb.pl* script from this repo. The source code should be modified to fit your data. The script will automatically compute RMS for each spectra using first 70 channels of each file. The number of channels to cumpute RMS should be also modified in the file *spect_comb.pl*. We create folder *_spect_comb* to store the combined spectra.
 ```perl spect_comb.pl```
 The resulting files ClumpNNN.dat looks like this (first column - velocity, second - intensity, last column - RMS estimation):
-```
+
 |-34.98225403|1.69511E+00|1.39041037401241|
 |-34.85528946|-3.24238E-02|1.39041037401241|
 |-34.72832489|-2.70249E+00|1.39041037401241|
 |-34.60136032|1.10365E+00|1.39041037401241|
 |-34.47439575|-1.53760E+00|1.39041037401241|
-```
+
 Note that spectra are beind combined using velocity shift specified in file *spect_comb.pl* ($dv = 35). If velocity shift will be too small, then data will be broken. 
 The important parameter is velocity inverval for emission in line 67 of *spect_comb.pl* ($v > -35 and $v < 0). All data points outside of this interval will not be included to the combined spectra. Thus if you have emission line at ~ -20 km/s, then selecting velocity inverval -35>v>0 and velocity shift dv = 35 is good way to go.
 
