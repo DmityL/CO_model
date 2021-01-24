@@ -20,7 +20,7 @@ lines.
 
 To go through the analysis, we need several instruments.
 
-#. Perl (installed by default in must Linux-based OS) with the following
+1. Perl (installed by default in must Linux-based OS) with the following
    modules:
 
    -  List::MoreUtils (install using ``cpan install List::MoreUtils``)
@@ -30,7 +30,7 @@ To go through the analysis, we need several instruments.
    -  PDL::NiceSlice (install using ``cpan install PDL::NiceSlice``)
    -  PDL::Stats (install using ``cpan install PDL::Stats``)
 
-#. Python (version 3.7 or later) with the following modules:
+2. Python (version 3.7 or later) with the following modules:
 
    -  Numpy (install using command ``pip install numpy``)
    -  scipy.optimize (install using command ``pip install scipy``)
@@ -38,12 +38,12 @@ To go through the analysis, we need several instruments.
    -  emcee (install using command ``pip install emcee``)
    -  corner (install using command ``pip install corner``)
 
-#. ATNF Miriad package for spectra extraction
+3. ATNF Miriad package for spectra extraction
 
    -  See following link for details on installation:
       https://www.atnf.csiro.au/computing/software/miriad/INSTALL.html
 
-#. STARLINK software package for GAUSSCLUMP extraction
+4. STARLINK software package for GAUSSCLUMP extraction
 
    -  Get the lastest Starlink release at
       http://starlink.eao.hawaii.edu/starlink/Releases
@@ -54,28 +54,28 @@ To go through the analysis, we need several instruments.
 Assume we have several CO data cubes for the same region. Firstly we
 need to make cubes comparable to each other.
 
-#. Convert cubes from fits to Miriad dataset using command
+1. Convert cubes from fits to Miriad dataset using command
    ``fits in=Data1.fits out=Data1 op=xyin``
-#. In necessary, add rest frequency information using command \`\`puthd
+2. In necessary, add rest frequency information using command \`\`puthd
    in=Data1/restfreq value=
-#. If necessary, convolve cubes to the same beam size using command
+3. If necessary, convolve cubes to the same beam size using command
    \`\ ``convol map=Data1 out=Data1.conv beam=13.2``
-#. If some cubes are in galactic coordinates, then convert them to
+4. If some cubes are in galactic coordinates, then convert them to
    equatorial using command
    ``regrid in=Data1.conv out=Data1.conv.regrid options=galeqsw,offset``
 
-| Here is the table containing rest frequency F0 (in Hz) and value of T0
+Here is the table containing rest frequency F0 (in Hz) and value of T0
 (= h\*nu/c) of different CO lines
-| \|Transition\|F0(CO)\|F0(13CO)\|F0(C17O)\|F0(C18O)\|T0(CO)\|T0(13CO)\|
-| \|-----\|-----\|-----\|-----\|-----\|-----\|-----\|
-| \|1-0\|115.2712018E+09\|110.2013543E+09\|112.3592837E+09\|109.7821734E+09\|5.5\|5.3\|
-| \|2-1\|230.5380000E+09\|220.3986841E+09\|224.7143850E+09\|219.5603541E+09\|11.1\|10.6\|
-| \|3-2\|345.7959899E+09\|330.5879652E+09\|337.0611298E+09\|329.3305525E+09\|16.6\|15.9\|
-| \|4-3\|461.0407682E+09\|440.7651735E+09\|449.3953412E+09\|439.0887658E+09\|22.1\|21.2\|
-| \|5-4\|576.2679305E+09\|550.9262850E+09\|561.7127845E+09\|548.8310055E+09\|27.7\|26.4\|
-| \|6-5\|691.4730763E+09\|661.0672766E+09\|674.0093443E+09\|658.5532782E+09\|33.2\|31.7\|
-| \|7-6\|806.6518060E+09\|771.1841255E+09\|786.2808166E+09\|768.2515933E+09\|38.7\|37.0\|
-| \|8-7\|921.7997000E+09\|881.2728093E+09\|898.5230217E+09\|877.9219553E+09\|44.2\|42.3\|
+\|Transition\|F0(CO)\|F0(13CO)\|F0(C17O)\|F0(C18O)\|T0(CO)\|T0(13CO)\|
+\|-----\|-----\|-----\|-----\|-----\|-----\|-----\|
+\|1-0\|115.2712018E+09\|110.2013543E+09\|112.3592837E+09\|109.7821734E+09\|5.5\|5.3\|
+\|2-1\|230.5380000E+09\|220.3986841E+09\|224.7143850E+09\|219.5603541E+09\|11.1\|10.6\|
+\|3-2\|345.7959899E+09\|330.5879652E+09\|337.0611298E+09\|329.3305525E+09\|16.6\|15.9\|
+\|4-3\|461.0407682E+09\|440.7651735E+09\|449.3953412E+09\|439.0887658E+09\|22.1\|21.2\|
+\|5-4\|576.2679305E+09\|550.9262850E+09\|561.7127845E+09\|548.8310055E+09\|27.7\|26.4\|
+\|6-5\|691.4730763E+09\|661.0672766E+09\|674.0093443E+09\|658.5532782E+09\|33.2\|31.7\|
+\|7-6\|806.6518060E+09\|771.1841255E+09\|786.2808166E+09\|768.2515933E+09\|38.7\|37.0\|
+\|8-7\|921.7997000E+09\|881.2728093E+09\|898.5230217E+09\|877.9219553E+09\|44.2\|42.3\|
 
 The convolution size should be computed as Beam = sqrt(Beam\_final^2 -
 Beam\_source^2)
@@ -143,40 +143,46 @@ extract the spectra from each data cube. Assume that we create
 subfolders for each data cube: ``_FCRAO_12CO_spectra``,
 ``_FCRAO_13CO_spectra``, ``_SMT_12CO_spectra``, ``_SMT_13CO_spectra``.
 
-| Then spectra for each clump should be extracted using following
-commands (coordinates and clump number should be replaced using
-GAUSSCLUMP catalog):
-| ``mbspect in=12CO_data coord=05:41:28.74,+35:48:56.5 log=_FCRAO_12CO_spectra/Clump001.dat device=_FCRAO_13CO_spectra/Clump001.ps/PS options=measure xaxis=velo > _FCRAO_13CO_spectra/Clump001.fit``
-| We will now have extracted spectra and linewidth estimation for each
+Then spectra for each clump should be extracted using following commands
+(coordinates and clump number should be replaced using GAUSSCLUMP
+catalog):
+``mbspect in=12CO_data coord=05:41:28.74,+35:48:56.5 log=_FCRAO_12CO_spectra/Clump001.dat device=_FCRAO_13CO_spectra/Clump001.ps/PS options=measure xaxis=velo > _FCRAO_13CO_spectra/Clump001.fit``
+We will now have extracted spectra and linewidth estimation for each
 line.
 
-| After we extract the spectra for each clump, we should combine
-different lines for each clump to a single file. That can be done using
+After we extract the spectra for each clump, we should combine different
+lines for each clump to a single file. That can be done using
 *spect\_comb.pl* script from this repo. One should modify the source
 code to fit your data. The script will automatically compute RMS for
 each spectra using the first 70 channels of each file. One should also
 modify the number of channels to compute RMS in the file
 *spect\_comb.pl*. We create folder **spect*\ comb* to store the combined
-spectra.
-| ``perl spect_comb.pl``
-| The resulting files ClumpNNN.dat looks like this (first column -
-velocity, second - intensity, last column - RMS estimation):
-| \|Velocity\|Intensity\|RMS\|
-| \|---\|---\|---\|
-| \|-34.98225403\|1.69511E+00\|1.39041037401241\|
-| \|-34.85528946\|-3.24238E-02\|1.39041037401241\|
-| \|-34.72832489\|-2.70249E+00\|1.39041037401241\|
-| \|-34.60136032\|1.10365E+00\|1.39041037401241\|
-| \|-34.47439575\|-1.53760E+00\|1.39041037401241\|
+spectra. ``perl spect_comb.pl``
 
-| Note that spectra are being combined using velocity shift specified in
-file *spect\_comb.pl* ($dv = 35). If the velocity shift is too small,
-then the script will break data.
-| The important parameter is velocity inverval for emission in line 67
-of *spect\_comb.pl* ($v > -35 and $v < 0). All data points outside of
-this interval will not be included to the combined spectra. Thus if you
-have emission line at ~ -20 km/s, then selecting velocity inverval
--35>v>0 and velocity shift dv = 35 is good way to go.
+The resulting files ClumpNNN.dat looks like this (first column -
+velocity, second - intensity, last column - RMS estimation):
+
++----------------+----------------+--------------------+
+| Velocity       | Intensity      | RMS                |
++================+================+====================+
+| -34.98225403   | 1.69511E+00    | 1.39041037401241   |
++----------------+----------------+--------------------+
+| -34.85528946   | -3.24238E-02   | 1.39041037401241   |
++----------------+----------------+--------------------+
+| -34.72832489   | -2.70249E+00   | 1.39041037401241   |
++----------------+----------------+--------------------+
+| -34.60136032   | 1.10365E+00    | 1.39041037401241   |
++----------------+----------------+--------------------+
+| -34.47439575   | -1.53760E+00   | 1.39041037401241   |
++----------------+----------------+--------------------+
+
+Note that spectra are being combined using velocity shift specified in
+file *spect\_comb.pl*
+(:math:`dv = 35). If the velocity shift is too small, then the script will break data.  The important parameter is velocity inverval for emission in line 67 of *spect_comb.pl* (`\ v
+> -35 and $v < 0). All data points outside of this interval will not be
+included to the combined spectra. Thus if you have emission line at ~
+-20 km/s, then selecting velocity inverval -35>v>0 and velocity shift dv
+= 35 is good way to go.
 
 4. Create an initial estimate of model parameters
 -------------------------------------------------
@@ -186,13 +192,12 @@ each clump: peak values of 12CO and 13CO lines, the linewidth of 13CO
 line. The values are being extracted from the spectra using
 ``scan_spectra.pl`` and ``scan_fit.pl`` utils.
 
-| Before we start extracting we need to create the simplified catalogue
-of clumps that we name ``clumps_cat.csv`` with the following content:
-| \|Clump\|Peak1\|Peak2\|V\|
-| \|---\|---\|---\|---\|
-| \|Clump001\|173.681\|2.862\|-18.95\|
-| \|Clump002\|173.631\|2.887\|-20.81\|
-| \|Clump003\|173.718\|2.694\|-16.69\|
+Before we start extracting we need to create the simplified catalogue of
+clumps that we name ``clumps_cat.csv`` with the following content:
+\|Clump\|Peak1\|Peak2\|V\| \|---\|---\|---\|---\|
+\|Clump001\|173.681\|2.862\|-18.95\|
+\|Clump002\|173.631\|2.887\|-20.81\|
+\|Clump003\|173.718\|2.694\|-16.69\|
 
 The content of ``clumps_cat.csv`` can be easily created using
 GAUSSCLUMPS catalogue from step 2. This file is necessary for further
@@ -254,11 +259,11 @@ looks like this:
 
 We need to extract linewidth for the 13CO(1-0) line.
 
-| After executing these tools, we will have the following files:
+After executing these tools, we will have the following files:
 *FCRAO*\ 12CO\_spectra\_Tpeak.csv, *FCRAO*\ 13CO\_spectra\_Tpeak.csv,
-*FCRAO*\ 13CO\_spectra\_FWHM.csv.
-| The next step is the creation of the initial estimate table. We call
-it ``calc.csv``. The content of the file is the following:
+*FCRAO*\ 13CO\_spectra\_FWHM.csv. The next step is the creation of the
+initial estimate table. We call it ``calc.csv``. The content of the file
+is the following:
 
 +------------+-----------+---------+----------+---------+---------+---------+-----------+-----------+---------+---------+
 | Clump      | Peak1     | Peak2   | V        | T12     | Tex     | T13     | tau\_13   | tau\_12   | FWHM    | sigma   |
