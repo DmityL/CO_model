@@ -36,6 +36,7 @@ Assume we have several CO data cubes for the same region. Firstly we need to mak
 4. If some cubes are in galactic coordinates, then convert them to equatorial using command ``regrid in=Data1.conv out=Data1.conv.regrid options=galeqsw,offset``
 
 Here is the table containing rest frequency F0 (in Hz) and value of T0 (= h*nu/c) of different CO lines
+
 |Transition|F0(CO)|F0(13CO)|F0(C17O)|F0(C18O)|T0(CO)|T0(13CO)|
 |-----|-----|-----|-----|-----|-----|-----|
 |1-0|115.2712018E+09|110.2013543E+09|112.3592837E+09|109.7821734E+09|5.5|5.3|
@@ -114,6 +115,7 @@ The important parameter is velocity inverval for emission in line 67 of *spect_c
 To get an initial estimate for each clump, we need following values for each clump: peak values of 12CO and 13CO lines, the linewidth of 13CO line. The values are being extracted from the spectra using `scan_spectra.pl` and `scan_fit.pl` utils.  
 
 Before we start extracting we need to create the simplified catalogue of clumps that we name `clumps_cat.csv` with the following content:
+
 |Clump|Peak1|Peak2|V|
 |---|---|---|---|
 |Clump001|173.681|2.862|-18.95|
