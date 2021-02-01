@@ -8,7 +8,7 @@ from scipy.optimize import fsolve
 from math import pi,log
 from numpy import exp,sqrt
 import ast 
-
+ 
 def load_data(fits_path):
     hdulist = fits.open(fits_path)
     data = hdulist[0].data
