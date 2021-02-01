@@ -2,7 +2,7 @@
 use File::Path qw(make_path remove_tree);
 use List::Util qw(max);
 use File::chdir;
-use File::Path;
+use File::Path; 
  # ======================= Input parameters ================================
 
 my $input_dir = "input";
